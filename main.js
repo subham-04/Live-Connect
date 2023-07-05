@@ -12,6 +12,11 @@ let init = async() =>{
 }
 
 
+let createOffer = async() =>{
+    
+}
+
+
 
 
 
