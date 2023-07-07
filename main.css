@@ -1,18 +1,43 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+
 #videos{
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1em;
+    grid-template-columns: 1fr;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .video-player{
     background-color: black;
     width: 100%;
-    height: 300px;
+    height: 100vh;
+    /* object-fit: cover; */
 }
 
 #user-2{
     display: none;
 }
+
+.smallFrame{
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  height: 170px;
+  width: 300px;
+  border-radius: 5px;
+  border: 2px solid bisque;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+  z-index: 1000;
+}
+
+
 .control-container {
     background-color: #bdc3c7;
     padding: 20px;
@@ -44,9 +69,16 @@
     display: flex;
     gap: 1rem;
   }
-  
-  /* Add hover effect */
-  .control-container:hover {
-    background-color: #8a2be2;
+
+
+  @media screen and (max-width:600px){
+        .smallFrame{
+          height: 80px;
+          width: 120px;
+        }
+
+        .control-container i{
+          color: black;
+          font-size: 1rem;
+        }
   }
-  

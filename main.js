@@ -69,6 +69,7 @@ let init = async() =>{
 
 let handleUserLeft = async(MemberID)=>{
     document.getElementById('user-2').style.display = 'none';
+    document.getElementById('user-1').classList.remove('smallFrame')
 }
 
 
@@ -99,6 +100,14 @@ let handleUserJoined = async(MemberID)=>{
 }
 
 
+let constraints ={
+    video:{
+        width:{min:640, ideal:1920, max:1920},
+        height:{min:480, ideal:1080, max:1080}
+    },
+    audio:true
+}
+
 
 let createPeerConnection = async(MemberID)=>{
 
@@ -110,9 +119,11 @@ let createPeerConnection = async(MemberID)=>{
     document.getElementById('user-2').srcObject = remoteStream;
     document.getElementById('user-2').style.display = 'block';
 
+    document.getElementById('user-1').classList.add('smallFrame')
+
 
     if(!localStream){
-        localStream = await navigator.mediaDevices.getUserMedia({video:true, audio:false});
+        localStream = await navigator.mediaDevices.getUserMedia(constraints);
         document.getElementById('user-1').srcObject = localStream;
     }
 
@@ -178,7 +189,7 @@ let leaveChannel = async() =>{
 
 
 let toggleCamera = async() =>{
-    let videoTrack = localStream.getTrack().find(track => track.kind === 'video')
+    let videoTrack = localStream.getTracks().find(track => track.kind === 'video')
 
     if(videoTrack.enabled){
         videoTrack.enabled = false
@@ -191,7 +202,25 @@ let toggleCamera = async() =>{
 }
 
 
+let toggleMic = async() =>{
+    let audioTrack = localStream.getTracks().find(track => track.kind === 'audio')
+
+    if(audioTrack.enabled){
+        audioTrack.enabled = false
+        document.getElementById('mic-btn').style.backgroundColor = 'rgb(255,80,80)'
+    }else{
+        audioTrack.enabled = true
+        document.getElementById('mic-btn').style.backgroundColor = '#bdc3c7'
+    
+    }
+}
+
+
+
+
 
 window.addEventListener('beforeunload',leaveChannel)
+document.getElementById('camera-btn').addEventListener('click', toggleCamera)
+document.getElementById('mic-btn').addEventListener('click',toggleMic)
 
 init();
