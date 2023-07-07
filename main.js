@@ -58,7 +58,7 @@ let init = async() =>{
 
 
     //this enables the permission for audio and video
-    localStream = await navigator.mediaDevices.getUserMedia({video:true, audio:false})
+    localStream = await navigator.mediaDevices.getUserMedia({video:true, audio:true})
     document.getElementById('user-1').srcObject = localStream;
 
     //create the offer immediately once we load our page
@@ -175,6 +175,22 @@ let leaveChannel = async() =>{
     await channel.leave()
     await client.logout()
 }
+
+
+let toggleCamera = async() =>{
+    let videoTrack = localStream.getTrack().find(track => track.kind === 'video')
+
+    if(videoTrack.enabled){
+        videoTrack.enabled = false
+        document.getElementById('camera-btn').style.backgroundColor = 'rgb(255,80,80)'
+    }else{
+        videoTrack.enabled = true
+        document.getElementById('camera-btn').style.backgroundColor = '#bdc3c7'
+    
+    }
+}
+
+
 
 window.addEventListener('beforeunload',leaveChannel)
 
