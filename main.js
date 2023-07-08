@@ -12,9 +12,6 @@ let urlParams = new URLSearchParams(queryString)
 let roomId = urlParams.get('room')
 
 
-let pendingCandidates = [];
-
-
 if(!roomId){
     window.location='lobby.html'
 }
@@ -88,12 +85,9 @@ let handleMessageFromPeer = async(message, MemberID)=>{
     }
 
     if(message.type=='candidate'){
-        if (peerConnection && peerConnection.remoteDescription) {
-            peerConnection.addIceCandidate(message.candidate);
-          } else {
-            // Store the ICE candidate temporarily until the remote description is set
-            pendingCandidates.push(message.candidate);
-          }
+        if(peerConnection){
+            peerConnection.addIceCandidate(message.candidate)
+        }
     }
     
 }
@@ -107,13 +101,8 @@ let handleUserJoined = async(MemberID)=>{
 
 
 let constraints ={
-    video:{
-        width:{min:640, ideal:1920, max:1920},
-        height:{min:480, ideal:1080, max:1080}
-    },
-    audio:{
-        echoCancellation: true
-    }
+    video:true,
+    audio:true
 }
 
 
@@ -185,14 +174,9 @@ let createAnswer = async(MemberID, offer)=>{
 
 
 let addAnswer = async(answer) =>{
-    if (!peerConnection.currentRemoteDescription) {
-        await peerConnection.setRemoteDescription(answer);
-        // Process pending ICE candidates
-        for (const candidate of pendingCandidates) {
-          peerConnection.addIceCandidate(candidate);
-        }
-        pendingCandidates = []; // Clear the pending candidates array
-      }
+    if(!peerConnection.currentRemoteDescription){
+        peerConnection.setRemoteDescription(answer)
+    }
 }
 
 let leaveChannel = async() =>{
